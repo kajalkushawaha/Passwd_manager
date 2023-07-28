@@ -1,0 +1,54 @@
+import hashlib
+
+passwords = {}  # Dictionary to store passwords
+
+def get_master_password():
+    # Function to get and hash the master password
+    master_password = input("Enter the master password: ")
+    return hashlib.sha256(master_password.encode()).hexdigest()
+
+def add_password(master_password):
+    # Function to add a new password
+    website = input("Enter the website: ")
+    username = input("Enter the username: ")
+    password = input("Enter the password: ")
+
+    # Encrypt the password using a simple hashing technique (SHA-256)
+    encrypted_password = hashlib.sha256(password.encode()).hexdigest()
+
+    # Store the encrypted password in the dictionary
+    passwords[website] = (username, encrypted_password)
+
+def view_password(master_password):
+    # Function to view a stored password
+    website = input("Enter the website: ")
+
+    # Retrieve the encrypted password from the dictionary
+    encrypted_password = passwords.get(website)
+    if encrypted_password:
+        print(f"Website: {website}")
+        print(f"Username: {encrypted_password[0]}")
+    else:
+        print("Website not found.")
+
+def main():
+    master_password = get_master_password()
+
+    while True:
+        print("\n1. Add Password")
+        print("2. View Password")
+        print("3. Exit")
+
+        choice = input("Enter your choice (1/2/3): ")
+
+        if choice == "1":
+            add_password(master_password)
+        elif choice == "2":
+            view_password(master_password)
+        elif choice == "3":
+            break
+        else:
+            print("Invalid choice. Try again.")
+
+if __name__ == "__main__":
+    main()
